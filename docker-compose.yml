@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  web:
+    build: .
+    restart: on-failure
+    ports:
+      - 5000:5000
+    environment:
+      SHIFAA_ENV: 'dev'
+      PYTHONPATH: '/code'
+    entrypoint: ['python', 'shifaa/web/main.py']
+    volumes:
+      - .:/code
+    depends_on:
+      - db-shifaa
+  db-shifaa:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
